@@ -35,6 +35,7 @@ void PE_Emitter_SetShrink(ParticleEmitter* pe, PE_EFFECT effect) { pe->shrink = 
 void PE_Emitter_SetGrow(ParticleEmitter* pe, PE_EFFECT effect) { pe->grow = effect; }
 void PE_Particle_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_Particle_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
+void PE_Particle_SetColor(ParticleEmitter* pe, CP_Color color) { pe->color = color; }
 void PE_Particle_SetSpeed(ParticleEmitter* pe, float speed) { pe->speed = speed; }
 void PE_Particle_SetAcceleration(ParticleEmitter* pe, float acceleration) { pe->acceleration = acceleration; }
 void PE_Particle_SetWeight(ParticleEmitter* pe, float weight) { pe->weight = weight; }

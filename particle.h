@@ -14,13 +14,4 @@ typedef struct Particle {
 	float positionX;
 	float positionY;
 	CP_Color color;
-
 } Particle ;
-
-typedef struct ParticleEmitter {
-	float positionX;
-	float positionY;
-	int directionBool;
-	float angle;
-	float power;
-} ParticleEmitter ;
