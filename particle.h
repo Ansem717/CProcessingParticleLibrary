@@ -8,10 +8,19 @@
 // Copyright © 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
-#include "cprocessing.h"
+#ifndef PARTICLE_H
+#define PARTICLE_H
+
+#include "ParticleEmitter.h"
 
 typedef struct Particle {
-	float positionX;
-	float positionY;
+	CP_Vector position, speed, acceleration; 
+	float size, theta, weight, lifespan;
+	PE_SHAPE shape;
 	CP_Color color;
 } Particle ;
+
+Particle newParticle(CP_Vector position, float speed, float acceleration, float size, float theta, float weight, float lifespan, PE_SHAPE shape, CP_Color color);
+void draw(Particle p);
+
+#endif

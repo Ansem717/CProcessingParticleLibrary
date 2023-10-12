@@ -12,7 +12,7 @@
 #define PARTICLE_EMITTER_H
 
 #include "cprocessing.h"
-#include "particle.h"
+//#include "particle.h"
 
 #define PE_PARTICLE_ARR_SIZE 50
 #define PE_EFFECT_ARR_SIZE 5
