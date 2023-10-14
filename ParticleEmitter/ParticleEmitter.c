@@ -35,11 +35,13 @@ void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds) { pe->delaySeco
 void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames) { pe->delayFrames = delayFrames; }
 void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE mode) { pe->delayMode = mode; }
 
-void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, int value) { pe->effects[effect] = value; }
+void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value) { pe->effects[effect] = value; }
 void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect) { pe->effects[effect] = 0; }
 void PE_ClearEffects(ParticleEmitter* pe) { memset(pe->effects, 0, sizeof(pe->effects)); }
 void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds) { pe->delayFlashSeconds = delayFlashSeconds; }
 void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames) { pe->delayFlashFrames = delayFlashFrames; }
+void PE_SetGrowLimit(ParticleEmitter* pe, float growLimit) { pe->growLimit = growLimit; }
+void PE_SetGrowMode(ParticleEmitter* pe, PE_GROW_MODE mode) { pe->growMode = mode; }
 
 void PE_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
@@ -110,15 +112,11 @@ void setTimestamp(ParticleEmitter* pe) {
 	else pe->_delayTimestamp = CP_System_GetSeconds();
 }
 
-
-
 void PE_AddMany(ParticleEmitter* pe, int amount) {
 	if (isStillWaiting(pe)) return;
-
 	for (int i = 0; i < amount; i++) {
 		enqueue(pe);
 	}
-
 	setTimestamp(pe);
 }
 
@@ -143,14 +141,14 @@ void PE_Run(ParticleEmitter* pe) {
 		}
 
 		//SPIN
-		pe->particles[index].rotation += (float)pe->effects[PE_EFFECT_SPIN];
+		pe->particles[index].rotation += pe->effects[PE_EFFECT_SPIN];
 
 		//FLASH
 		if (pe->effects[PE_EFFECT_FLASH] && !isStillWaitingFlash(pe, pe->particles[index])) {
 			if (pe->particles[index].flashToggle == 1) {
 				//brighten up
 				CP_ColorHSL peColHSL = CP_ColorHSL_FromColor(pe->particles[index].color);
-				peColHSL.l += pe->effects[PE_EFFECT_FLASH];
+				peColHSL.l += (int)pe->effects[PE_EFFECT_FLASH];
 				pe->particles[index].color = CP_Color_FromColorHSL(peColHSL);
 			} else {
 				//restore color
@@ -159,6 +157,20 @@ void PE_Run(ParticleEmitter* pe) {
 			pe->particles[index].flashToggle *= -1;
 			if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->particles[index].flashTimestamp = (float)CP_System_GetFrameCount();
 			else pe->particles[index].flashTimestamp = CP_System_GetSeconds();
+		}
+
+		//SHRINK
+		if (pe->particles[index].size - pe->effects[PE_EFFECT_SHRINK] <= 0) dequeue(pe);
+		else pe->particles[index].size -= pe->effects[PE_EFFECT_SHRINK];
+
+		//GROW
+		if (pe->growLimit) {
+			if (pe->particles[index].size + pe->effects[PE_EFFECT_GROW] >= pe->growLimit) {
+				if (pe->growMode == PE_GROW_MODE_DEQUEUE) dequeue(pe);
+			}
+			else pe->particles[index].size += pe->effects[PE_EFFECT_GROW];
+		} else {
+			pe->particles[index].size += pe->effects[PE_EFFECT_GROW];
 		}
 
 		//LIFESPAN

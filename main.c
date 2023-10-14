@@ -19,21 +19,26 @@ ParticleEmitter pe;
 void game_init(void) {
 	CP_System_SetWindowSize(800, 800);
 	pe = PE_New(CP_Vector_Set(380, 400));
-	PE_SetColor(&pe, CP_Color_Create(100, 100, 0, 255));
+	PE_SetColor(&pe, CP_Color_Create(0, 50, 0, 255));
 	PE_SetAngle(&pe, -40);
 	PE_SetAngleRange(&pe, 50);
 	PE_SetLifespan(&pe, 100);
 	PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
-	PE_SetDelayFrames(&pe, 5);
+	PE_SetDelayFrames(&pe, 2);
 	PE_SetWeight(&pe, 0.05f);
-	PE_SetSize(&pe, 9);
+	PE_SetSize(&pe, 1);
 	PE_SetShape(&pe, PE_SHAPE_SQUARE);
 	PE_SetSpeed(&pe, 6);
 
-	PE_AddEffect(&pe, PE_EFFECT_FADEOUT, 5);
+	//PE_AddEffect(&pe, PE_EFFECT_FADEOUT, 5);
 	PE_AddEffect(&pe, PE_EFFECT_SPIN, 20);
 	PE_AddEffect(&pe, PE_EFFECT_FLASH, 70);
-	PE_SetDelayFlashFrames(&pe, 2);
+	PE_SetDelayFlashFrames(&pe, 3);
+
+	PE_AddEffect(&pe, PE_EFFECT_GROW, 0.3f);
+	PE_SetGrowMode(&pe, PE_GROW_MODE_STOP);
+	PE_SetGrowLimit(&pe, 0);
+
 }
 
 void game_update(void) {
@@ -43,7 +48,7 @@ void game_update(void) {
 	//PE_SetColorRandom(&pe);
 
 	//if (CP_Input_KeyReleased(KEY_SPACE)) {
-		PE_AddMany(&pe, 4);
+		PE_Add(&pe);
 	//}
 }
 

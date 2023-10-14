@@ -37,6 +37,11 @@ typedef enum PE_SHAPE {
 	PE_SHAPE_SQUARE
 } PE_SHAPE;
 
+typedef enum PE_GROW_MODE {
+	PE_GROW_MODE_STOP,
+	PE_GROW_MODE_DEQUEUE
+} PE_GROW_MODE ;
+
 #include "cprocessing.h"
 #include "particle.h"
 
@@ -46,7 +51,7 @@ typedef struct ParticleEmitter {
 	float directionalAngle; //0 degrees is north
 	float directionalRange; //0 means all particles have no randomness when spawned.
 	int count; //current number of particles; LIMIT IS 50 (PE_PARTICLE_ARR_SIZE)
-	int effects[PE_EFFECT_ARR_SIZE]; //Boolean array of effects. LIMIT IS 5 (PE_EFFECT_ARR_SIZE)
+	float effects[PE_EFFECT_ARR_SIZE]; //Boolean array of effects. LIMIT IS 5 (PE_EFFECT_ARR_SIZE)
 
 	float size; //Initial size of particle
 	PE_SHAPE shape; //Shape of each particle.
@@ -67,6 +72,8 @@ typedef struct ParticleEmitter {
 
 	float delayFlashSeconds; //Flash Delay in seconds
 	int delayFlashFrames; //Flash Delay in Frames
+	float growLimit; //if a particle is growing, it dequeus or stops (GROW_MODE) when it reaches this limit.
+	PE_GROW_MODE growMode; //determines if particle is deqeueued or not when it reaches growLimit
 } ParticleEmitter;
 
 ParticleEmitter PE_New(CP_Vector position);
@@ -77,13 +84,15 @@ void PE_SetAngle(ParticleEmitter* pe, float theta);
 void PE_SetAngleRange(ParticleEmitter* pe, float thetaRange);
 void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
 void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
-void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE);
+void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE mode);
 
-void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, int value);
+void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value);
 void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
 void PE_ClearEffects(ParticleEmitter* pe);
 void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds);
 void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames);
+void PE_SetGrowLimit(ParticleEmitter* pe, float growLimit);
+void PE_SetGrowMode(ParticleEmitter* pe, PE_GROW_MODE mode);
 
 void PE_SetSize(ParticleEmitter* pe, float size);
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
