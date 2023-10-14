@@ -20,7 +20,7 @@ void game_init(void)
 {
 	CP_System_SetWindowSize(800, 800);
 	pe = PE_Emitter_New(CP_Vector_Set(400, 400));
-	PE_Particle_SetColor(&pe, CP_Color_Create(200, 100, 0, 255));
+	PE_Particle_SetColor(&pe, CP_Color_Create(0, 200, 0, 255));
 	PE_Emitter_SetAngle(&pe, 50);
 	PE_Emitter_SetAngleRange(&pe, 20);
 	PE_Particle_SetLifespan(&pe, 1000);
@@ -34,6 +34,14 @@ void game_update(void)
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 	PE_Emitter_Run(&pe);
 	PE_Particle_Add(&pe);
+
+	PE_Particle_SetColorRandom(&pe);
+
+	if (CP_Input_KeyReleased(KEY_SPACE)) {
+		PE_Particle_SetShape(&pe, PE_SHAPE_SQUARE);
+	} else if (CP_Input_KeyReleased(KEY_K)) {
+		PE_Particle_SetShape(&pe, PE_SHAPE_CIRCLE);
+	}
 }
 
 void game_exit(void)

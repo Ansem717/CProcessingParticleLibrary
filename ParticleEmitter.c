@@ -41,7 +41,18 @@ void PE_Effect_ClearEffects(ParticleEmitter* pe) { memset(pe->effects, 0, sizeof
 
 void PE_Particle_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_Particle_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
-void PE_Partcile_SetColorRandom(ParticleEmitter* pe) { pe->col = CP_Color_FromColorHSL(CP_ColorHSL_Create(CP_Random_RangeInt(0, 255), 255, 255, 255)); }
+
+void PE_Particle_SetColorRandom(ParticleEmitter* pe) { 
+	pe->col = CP_Color_FromColorHSL(
+		CP_ColorHSL_Create(
+			CP_Random_RangeInt(0, 360), 
+			100, 
+			80,
+			255
+		)
+	); 
+}
+
 void PE_Particle_SetColor(ParticleEmitter* pe, CP_Color color) { pe->col = color; }
 void PE_Particle_SetSpeed(ParticleEmitter* pe, float speed) { pe->speed = speed; }
 void PE_Particle_SetAcceleration(ParticleEmitter* pe, float acceleration) { pe->acceleration = acceleration; }
@@ -50,15 +61,6 @@ void PE_Particle_SetLifespan(ParticleEmitter* pe, int lifespan) { pe->lifespan =
 
 float getRandomTheta(float origin, float range) {
 	return CP_Random_RangeFloat(origin - range, origin + range);
-}
-
-void removeParticleFromFront(ParticleEmitter* pe, int index) {
-	for (int j = index; j > 0; j--) {
-		//J will start at given index, ex: 4... [z x c v b n m] starts at [z x c v (b) n m]
-		//pe[4] becomes pe[3]. So the array is now [z x c v v n m]
-		//Keep going: zxccvnm -> zxxcvnm -> zzxcvnm; then when you run DEQEUE below: zxcvnm_
-		pe->particles[j] = pe->particles[j - 1];
-	}
 }
 
 void dequeue(ParticleEmitter *pe) {

@@ -82,7 +82,7 @@ void PE_Effect_ClearEffects(ParticleEmitter* pe);
 
 void PE_Particle_SetSize(ParticleEmitter* pe, float size);
 void PE_Particle_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
-void PE_Partcile_SetColorRandom(ParticleEmitter* pe);
+void PE_Particle_SetColorRandom(ParticleEmitter* pe);
 void PE_Particle_SetColor(ParticleEmitter* pe, CP_Color color);
 void PE_Particle_SetSpeed(ParticleEmitter* pe, float speed);
 void PE_Particle_SetAcceleration(ParticleEmitter* pe, float acceleration);
