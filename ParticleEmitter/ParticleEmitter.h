@@ -25,11 +25,11 @@ typedef enum PE_DELAY_MODE {
 } PE_DELAY_MODE;
 
 typedef enum PE_EFFECT {
-	PE_EFFECT_FADEOUT,	//0 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
-	PE_EFFECT_FLASH,	//1 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
-	PE_EFFECT_SPIN,		//2 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
-	PE_EFFECT_SHRINK,	//3 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
-	PE_EFFECT_GROW		//4 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
+	PE_EFFECT_FADEOUT,	//0 ;; Used as array index in pe->effects[]. 
+	PE_EFFECT_FLASH,	//1 ;; Used as array index in pe->effects[]. 
+	PE_EFFECT_SPIN,		//2 ;; Used as array index in pe->effects[]. 
+	PE_EFFECT_SHRINK,	//3 ;; Used as array index in pe->effects[]. 
+	PE_EFFECT_GROW		//4 ;; Used as array index in pe->effects[].
 } PE_EFFECT;
 
 typedef enum PE_SHAPE {
@@ -64,6 +64,9 @@ typedef struct ParticleEmitter {
 	int delayFrames; //delay in frames to slow down particle generation
 	PE_DELAY_MODE delayMode; //Mode to abide which delay
 	float _delayTimestamp; //most recent timestamp for the delay check
+
+	float delayFlashSeconds; //Flash Delay in seconds
+	int delayFlashFrames; //Flash Delay in Frames
 } ParticleEmitter;
 
 ParticleEmitter PE_New(CP_Vector position);
@@ -79,6 +82,8 @@ void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE);
 void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, int value);
 void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
 void PE_ClearEffects(ParticleEmitter* pe);
+void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds);
+void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames);
 
 void PE_SetSize(ParticleEmitter* pe, float size);
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
