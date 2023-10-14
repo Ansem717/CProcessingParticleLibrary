@@ -19,39 +19,39 @@ To use the library, you only need to include the emitter file.
 # Usage
 Refer to the functions below to learn how to use the Particle Emitter library.  
 - [PE_New](https://github.com/Ansem717/CProcessingParticleLibrary#pe_new)
-- PE_SetPosition
-- PE_SetTargetMode
-- PE_SetAngle
-- PE_SetAngleRange
-- PE_SetDelayMode
-- PE_SetDelaySeconds
-- PE_SetDelayFrames
+- [PE_SetPosition](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setposition)
+- [PE_SetTargetMode](https://github.com/Ansem717/CProcessingParticleLibrary#pe_settargetmode)
+- [PE_SetAngle](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setangle)
+- [PE_SetAngleRange](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setanglerange)
+- [PE_SetDelayMode](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelaymode)
+- [PE_SetDelaySeconds](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelayseconds)
+- [PE_SetDelayFrames](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelayframes)
 <br />
 
-- PE_AddEffect
-- PE_RemoveEffect
-- PE_ClearEffects
-- PE_SetDelayFlashSeconds
-- PE_SetDelayFlashFrames
-- PE_SetGrowMode
-- PE_SetGrowLimit
-- PE_SetDelayGrowShrinkSeconds
-- PE_SetDelayGrowShrinkFrames
+- [PE_AddEffect](https://github.com/Ansem717/CProcessingParticleLibrary#pe_addeffect)
+- [PE_RemoveEffect](https://github.com/Ansem717/CProcessingParticleLibrary#pe_removeeffect)
+- [PE_ClearEffects](https://github.com/Ansem717/CProcessingParticleLibrary#pe_cleareffects)
+- [PE_SetDelayFlashSeconds](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelayflashseconds)
+- [PE_SetDelayFlashFrames](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelayflashframes)
+- [PE_SetGrowMode](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setgrowmode)
+- [PE_SetGrowLimit](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setgrowlimit)
+- [PE_SetDelayGrowShrinkSeconds](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelaygrowshrinkseconds)
+- [PE_SetDelayGrowShrinkFrames](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setdelaygrowshrinkframes)
 <br />
 
-- PE_SetSize
-- PE_SetShape
-- PE_SetColor
-- PE_SetColorRandom
-- PE_SetSpeed
-- PE_SetAcceleration
-- PE_SetWeight
-- PE_SetLifespan
+- [PE_SetSize](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setsize)
+- [PE_SetShape](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setshape)
+- [PE_SetColor](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setcolor)
+- [PE_SetColorRandom](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setcolorrandom)
+- [PE_SetSpeed](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setspeed)
+- [PE_SetAcceleration](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setacceleration)
+- [PE_SetWeight](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setweight)
+- [PE_SetLifespan](https://github.com/Ansem717/CProcessingParticleLibrary#pe_setlifespan)
 <br />
 
-- PE_Add
-- PE_AddMany
-- PE_Run
+- [PE_Add](https://github.com/Ansem717/CProcessingParticleLibrary#pe_add)
+- [PE_AddMany](https://github.com/Ansem717/CProcessingParticleLibrary#pe_addmany)
+- [PE_Run](https://github.com/Ansem717/CProcessingParticleLibrary#pe_run)
 
 # PE_New
 Create a new Particle Emitter at a CP_Vector position. 
@@ -67,17 +67,132 @@ ParticleEmitter PE_New(CP_Vector position);
 ```c
 ParticleEmitter pe;
 
-void init(void) {
-  pe = PE_New(CP_Vector_Create(400, 400));
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
 }
 ```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetPosition
+Sets the position of a given Particle Emitter (pointer) to a given CP_Vector.
+## Function
+```c
+void PE_SetPosition(ParticleEmitter* pe, CP_Vector position);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- position (CP_Vector) - the new position to set the emitter to.
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
 
-
-<!-- void PE_SetPosition(ParticleEmitter* pe, CP_Vector position);
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetPosition(&pe, CP_Vector_Set(200, 200));
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetTargetMode
+Sets the Target Mode of a given Particle Emitter (pointer) to the desired mode. Two modes are:
+- PE_TARGET_MODE_DIRECTIONAL :: Default mode. The particles will aim in a conical direction based on the direction angle and direction range.
+- PE_TARGET_MODE_RADIAL :: The particles will aim in any random direction, ignoring angle and range.
+## Function
+```c
 void PE_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- mode (PE_TARGET_MODE) - the mode to swap to.
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetTargetMode(&pe, PE_TARGET_MODE_RADIAL);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetAngle
+Sets the initial direction angle (degrees) for particles when using PE_TARGET_MODE_DIRECTIONAL.
+- If the angle is 0, the particles aim vertical.
+- If the angle is 90, the particles aim to the right.
+- If the angle is 180, the particles aim down.
+- If the angle is 270 (or -90), the particles aim to the left.
+## Function
+```c
 void PE_SetAngle(ParticleEmitter* pe, float theta);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- theta (float) - the angle to set
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetTargetMode(&pe, PE_TARGET_MODE_DIRECTIONAL);
+  PE_SetAngle(&pe, 45); //all particles will emit towards the top right
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetAngleRange
+Sets the range for randomness originating from the directional angle. 
+## Function
+```c
 void PE_SetAngleRange(ParticleEmitter* pe, float thetaRange);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- thetaRange (float) - the range for randomness
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetTargetMode(&pe, PE_TARGET_MODE_DIRECTIONAL);
+  PE_SetAngle(&pe, 45); //all particles will emit towards the top right
+  PE_SetAngleRange(&pe, 15); //now all particles will emit between angles 30 and 60, chosen randomly
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetDelayMode
+Sets the Delay Mode for calculating emission and effect delays. There are two options:
+- PE_DELAY_MODE_SECONDS :: Default mode. Uses the delay seconds set from SetDelaySeconds to calculate delay.
+- PE_DELAY_MODE_FRAMES :: Uses the delay frames set from SetDelayFrames to calculate delay.
+## Function
+```c
 void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE mode);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- mode (PE_DELAY_MODE) - the mode for calculating delay
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+  PE_SetDelayFrames(&pe, 5); //prevent new particles within 5 frames of the most recent one.
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+<!--# PE_SetDelayMode
+Sets the Delay Mode for calculating emission delays.
+## Function
+```c
 void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
 void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
 
