@@ -26,6 +26,7 @@ Refer to the functions below to learn how to use the Particle Emitter library.
 - PE_SetDelayMode
 - PE_SetDelaySeconds
 - PE_SetDelayFrames
+<br />
 
 - PE_AddEffect
 - PE_RemoveEffect
@@ -36,6 +37,7 @@ Refer to the functions below to learn how to use the Particle Emitter library.
 - PE_SetGrowLimit
 - PE_SetDelayGrowShrinkSeconds
 - PE_SetDelayGrowShrinkFrames
+<br />
 
 - PE_SetSize
 - PE_SetShape
@@ -45,6 +47,7 @@ Refer to the functions below to learn how to use the Particle Emitter library.
 - PE_SetAcceleration
 - PE_SetWeight
 - PE_SetLifespan
+<br />
 
 - PE_Add
 - PE_AddMany
