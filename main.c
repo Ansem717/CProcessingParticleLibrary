@@ -16,40 +16,34 @@
 
 ParticleEmitter pe;
 
-void game_init(void)
-{
+void game_init(void) {
 	CP_System_SetWindowSize(800, 800);
-	pe = PE_Emitter_New(CP_Vector_Set(400, 400));
-	PE_Particle_SetColor(&pe, CP_Color_Create(0, 200, 0, 255));
-	PE_Emitter_SetAngle(&pe, 50);
-	PE_Emitter_SetAngleRange(&pe, 20);
-	PE_Particle_SetLifespan(&pe, 1000);
-	PE_Particle_SetSpeed(&pe, 10);
-	PE_Emitter_SetDelayMode(&pe, PE_DELAY_MODE_SECONDS);
-	PE_Emitter_SetDelaySeconds(&pe, 0);// .25);
+	pe = PE_New(CP_Vector_Set(400, 400));
+	PE_SetColor(&pe, CP_Color_Create(255, 255, 0, 255));
+	PE_SetAngle(&pe, -60);
+	PE_SetAngleRange(&pe, 20);
+	PE_SetLifespan(&pe, 20);
+	PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+	PE_SetDelayFrames(&pe, 0);
+	PE_SetWeight(&pe, 0);
+	PE_SetSize(&pe, 5);
+
+	//PE_Effect_AddEffect(&pe, PE_EFFECT_FADEOUT, 10);
 }
 
-void game_update(void)
-{
+void game_update(void) {
+	PE_SetSpeed(&pe, CP_Random_RangeInt(1, 5));
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
-	PE_Emitter_Run(&pe);
-	PE_Particle_Add(&pe);
-
-	PE_Particle_SetColorRandom(&pe);
+	PE_Run(&pe);
 
 	if (CP_Input_KeyReleased(KEY_SPACE)) {
-		PE_Particle_SetShape(&pe, PE_SHAPE_SQUARE);
-	} else if (CP_Input_KeyReleased(KEY_K)) {
-		PE_Particle_SetShape(&pe, PE_SHAPE_CIRCLE);
+		PE_Add(&pe);
 	}
 }
 
-void game_exit(void)
-{
-}
+void game_exit(void) {}
 
-int main(void)
-{
+int main(void) {
 	CP_Engine_SetNextGameState(game_init, game_update, game_exit);
 	CP_Engine_Run();
 	return 0;

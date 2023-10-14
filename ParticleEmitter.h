@@ -30,7 +30,7 @@ typedef enum PE_EFFECT {
 	PE_EFFECT_SPIN,		//2 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
 	PE_EFFECT_SHRINK,	//3 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
 	PE_EFFECT_GROW		//4 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
-} PE_EFFECT ;
+} PE_EFFECT;
 
 typedef enum PE_SHAPE {
 	PE_SHAPE_CIRCLE,
@@ -66,30 +66,31 @@ typedef struct ParticleEmitter {
 	float _delayTimestamp; //most recent timestamp for the delay check
 } ParticleEmitter;
 
-ParticleEmitter PE_Emitter_New(CP_Vector position);
+ParticleEmitter PE_New(CP_Vector position);
 
-void PE_Emitter_SetPosition(ParticleEmitter* pe, CP_Vector position);
-void PE_Emitter_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode);
-void PE_Emitter_SetAngle(ParticleEmitter* pe, float theta);
-void PE_Emitter_SetAngleRange(ParticleEmitter* pe, float thetaRange);
-void PE_Emitter_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
-void PE_Emitter_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
-void PE_Emitter_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE);
+void PE_SetPosition(ParticleEmitter* pe, CP_Vector position);
+void PE_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode);
+void PE_SetAngle(ParticleEmitter* pe, float theta);
+void PE_SetAngleRange(ParticleEmitter* pe, float thetaRange);
+void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
+void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
+void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE);
 
-void PE_Effect_AddEffect(ParticleEmitter* pe, PE_EFFECT effect);
-void PE_Effect_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
-void PE_Effect_ClearEffects(ParticleEmitter* pe);
+void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, int value);
+void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
+void PE_ClearEffects(ParticleEmitter* pe);
 
-void PE_Particle_SetSize(ParticleEmitter* pe, float size);
-void PE_Particle_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
-void PE_Particle_SetColorRandom(ParticleEmitter* pe);
-void PE_Particle_SetColor(ParticleEmitter* pe, CP_Color color);
-void PE_Particle_SetSpeed(ParticleEmitter* pe, float speed);
-void PE_Particle_SetAcceleration(ParticleEmitter* pe, float acceleration);
-void PE_Particle_SetWeight(ParticleEmitter* pe, float weight);
-void PE_Particle_SetLifespan(ParticleEmitter* pe, int lifespan);
+void PE_SetSize(ParticleEmitter* pe, float size);
+void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
+void PE_SetColorRandom(ParticleEmitter* pe);
+void PE_SetColor(ParticleEmitter* pe, CP_Color color);
+void PE_SetSpeed(ParticleEmitter* pe, float speed);
+void PE_SetAcceleration(ParticleEmitter* pe, float acceleration);
+void PE_SetWeight(ParticleEmitter* pe, float weight);
+void PE_SetLifespan(ParticleEmitter* pe, int lifespan);
 
-void PE_Particle_Add(ParticleEmitter* pe);
-void PE_Emitter_Run(ParticleEmitter* pe);
+void PE_AddMany(ParticleEmitter* pe, int amount);
+void PE_Add(ParticleEmitter* pe);
+void PE_Run(ParticleEmitter* pe);
 
 #endif
