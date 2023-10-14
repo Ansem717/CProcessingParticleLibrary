@@ -1,23 +1,23 @@
 # CProcessing Particle Library
-A custom library to create a Particle Emitter in CProcessing.
-Author: Andy Malik
-Created at Digipen
-© 2023 DigiPen (USA) Corporation
+A custom library to create a Particle Emitter in CProcessing.  
+Author: Andy Malik  
+Created at Digipen  
+© 2023 DigiPen (USA) Corporation  
 
 ## Download
-The only necessary folder to download is the ParticleEmitter folder in this repo.
+The only necessary folder to download is the ParticleEmitter folder in this repo.  
 [CLICK HERE TO DOWNLOAD ZIP](https://minhaskamal.github.io/DownGit/#/home?url=https:%2F%2Fgithub.com%2FAnsem717%2FCProcessingParticleLibrary%2Ftree%2Fmain%2FParticleEmitter).  
-*Will likely open a new tab to DownGit. Special thanks to Minhas Kamal for this app.*
-Extract the ParticleEmitter folder into your repository.
+*Will likely open a new tab to DownGit. Special thanks to Minhas Kamal for this app.*  
+Extract the ParticleEmitter folder into your repository.  
 
 ## Include
-To use the library, you only need to include the emitter file.
+To use the library, you only need to include the emitter file.  
 ```c
 #include "ParticleEmitter/ParticleEmitter.h"
 ```
 
 # Usage
-Refer to the functions below to learn how to use the Particle Emitter library.
+Refer to the functions below to learn how to use the Particle Emitter library.  
 - [PE_New](https://github.com/Ansem717/CProcessingParticleLibrary#pe_new)
 - PE_SetPosition
 - PE_SetTargetMode
