@@ -95,8 +95,8 @@ void init() {
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
 # PE_SetTargetMode
 Sets the Target Mode of a given Particle Emitter (pointer) to the desired mode. Two modes are:
-- PE_TARGET_MODE_DIRECTIONAL :: Default mode. The particles will aim in a conical direction based on the direction angle and direction range.
-- PE_TARGET_MODE_RADIAL :: The particles will aim in any random direction, ignoring angle and range.
+- `PE_TARGET_MODE_DIRECTIONAL` :: Default mode. The particles will aim in a conical direction based on the direction angle and direction range.
+- `PE_TARGET_MODE_RADIAL` :: The particles will aim in any random direction, ignoring angle and range.
 ## Function
 ```c
 void PE_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode);
@@ -167,8 +167,8 @@ void init() {
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
 # PE_SetDelayMode
 Sets the Delay Mode for calculating emission and effect delays. There are two options:
-- PE_DELAY_MODE_SECONDS :: Default mode. Uses the delay seconds set from SetDelaySeconds to calculate delay.
-- PE_DELAY_MODE_FRAMES :: Uses the delay frames set from SetDelayFrames to calculate delay.
+- `PE_DELAY_MODE_SECONDS` :: Default mode. Uses the delay seconds set from SetDelaySeconds to calculate delay.
+- `PE_DELAY_MODE_FRAMES` :: Uses the delay frames set from SetDelayFrames to calculate delay.
 ## Function
 ```c
 void PE_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE mode);
@@ -206,7 +206,7 @@ ParticleEmitter pe;
 
 void init() {
   pe = PE_New(CP_Vector_Set(400, 400));
-  PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_SECONDS);
   PE_SetDelaySeconds(&pe, 2); //prevent new particles within 2 seconds of the most recent one.
 }
 ```
@@ -235,13 +235,13 @@ void init() {
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
 # PE_AddEffect
 Adds an effect to the particle emitter set to the given value. Effects include:
-- PE_EFFECT_FADEOUT :: Particles fadeout during lifetime at a rate provided by the given float. Values best between 2 and 10. Particles fully faded out are dequeued.
-- PE_EFFECT_FLASH :: Particles flash back and force. Given float determines the increase of color lightness. Values best at around 60 value with a dark base color. Use PE_setDelayFlash to determine how fast it flashes.
-- PE_EFFECT_SPIN :: Particles rotate clockwise during lifetime . Only noticable with PE_SHAPE_SQUARE. Values best between 5 and 30.
-- PE_EFFECT_SHRINK :: Particles shrink during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f. Particles fully shrunk are dequeued.
-- PE_EFFECT_GROW :: Particles grow during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f.
- - If growLimit is set, then particles will either stop or dequeue when hitting the growlimit, based on the chosen PE_GROW_MODE.
- - If PE_EFFECT_GROW and PE_EFFECT_SHRINK are both active, the Particle will waver between `size - SHRINK VALUE` and `size + GROW VALUE`. Use PE_setDelayGrowShrink to determine how fast it wavers.
+- `PE_EFFECT_FADEOUT` :: Particles fadeout during lifetime at a rate provided by the given float. Values best between 2 and 10. Particles fully faded out are dequeued.
+- `PE_EFFECT_FLASH` :: Particles flash back and force. Given float determines the increase of color lightness. Values best at around 60 value with a dark base color. Use PE_setDelayFlash to determine how fast it flashes.
+- `PE_EFFECT_SPIN` :: Particles rotate clockwise during lifetime . Only noticable with PE_SHAPE_SQUARE. Values best between 5 and 30.
+- `PE_EFFECT_SHRINK` :: Particles shrink during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f. Particles fully shrunk are dequeued.
+- `PE_EFFECT_GROW` :: Particles grow during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f.
+  - If growLimit is set, then particles will either stop or dequeue when hitting the growlimit, based on the chosen PE_GROW_MODE.
+  - If PE_EFFECT_GROW and PE_EFFECT_SHRINK are both active, the Particle will waver between `size - SHRINK VALUE` and `size + GROW VALUE`. Use PE_setDelayGrowShrink to determine how fast it wavers.
 ## Function
 ```c
 void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value);
