@@ -189,14 +189,102 @@ void init() {
 }
 ```
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetDelaySeconds
+Sets the number of seconds to wait between particle emissions and effects. Only usable if PE_DELAY_MODE_SECONDS is set.
+## Function
+```c
+void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- delaySeconds (float) - the number of seconds to wait before allowing new particles
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+  PE_SetDelaySeconds(&pe, 2); //prevent new particles within 2 seconds of the most recent one.
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetDelayFrames
+Sets the number of frames to wait between particle emissions and effects. Only usable if PE_DELAY_MODE_FRAMES is set.
+## Function
+```c
+void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- int (delayFrames) - the number of frames to wait before allowing new particles
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+  PE_SetDelayFrames(&pe, 5); //prevent new particles within 5 frames of the most recent one.
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_AddEffect
+Adds an effect to the particle emitter set to the given value. Effects include:
+- PE_EFFECT_FADEOUT :: Particles fadeout during lifetime at a rate provided by the given float. Values best between 2 and 10. Particles fully faded out are dequeued.
+- PE_EFFECT_FLASH :: Particles flash back and force. Given float determines the increase of color lightness. Values best at around 60 value with a dark base color. Use PE_setDelayFlash to determine how fast it flashes.
+- PE_EFFECT_SPIN :: Particles rotate clockwise during lifetime . Only noticable with PE_SHAPE_SQUARE. Values best between 5 and 30.
+- PE_EFFECT_SHRINK :: Particles shrink during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f. Particles fully shrunk are dequeued.
+- PE_EFFECT_GROW :: Particles grow during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f.
+ - If growLimit is set, then particles will either stop or dequeue when hitting the growlimit, based on the chosen PE_GROW_MODE.
+ - If PE_EFFECT_GROW and PE_EFFECT_SHRINK are both active, the Particle will waver between `size - SHRINK VALUE` and `size + GROW VALUE`. Use PE_setDelayGrowShrink to determine how fast it wavers.
+## Function
+```c
+void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- effect (PE_EFFECT) - the effect to set
+- value (float) - the value to set it to.
+### Return
+This function does not return anything.
+## Examples
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400, 400));
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+
+  PE_AddEffect(&pe, PE_EFFECT_FADEOUT, 4);
+
+  PE_SetColor(&pe, CP_Color_Create(100, 0, 0, 255)); //set a dark red color
+  PE_SetFlashDelayFrames(&pe, 3); //wait 3 frames before switching to the next color
+  PE_AddEffect(&pe, PE_EFFECT_FLASH, 70); //bright flash
+
+  PE_AddEffect(&pe, PE_EFFECT_GROW, 0.3f);
+  PE_SetGrowMode(&pe, PE_GROW_MODE_STOP); //when growing hits the grow limit, just stop growing.
+  PE_SetGrowLimit(&pe, 20); //Stop growing when size equals 20.
+}
+```
+```c
+  PE_SetDelayMode(&pe, PE_DELAY_MODE_SECONDS); //use SECONDS
+  ...
+  PE_AddEffect(&pe, PE_EFFECT_SHRINK, 5);
+  PE_AddEffect(&pe, PE_EFFECT_GROW, 5);
+  //Both grow and shrink means we will swap between SIZE - 5 (shrink) and SIZE + 5 (grow).
+  PE_SetDelayGrowShrinkSeconds(&pe, 1); //wait 1 second when swapping between the two sizes.
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
 <!--# PE_SetDelayMode
 Sets the Delay Mode for calculating emission delays.
 ## Function
 ```c
-void PE_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
-void PE_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
-
-void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value);
 void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
 void PE_ClearEffects(ParticleEmitter* pe);
 void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds);
