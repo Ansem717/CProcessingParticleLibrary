@@ -47,7 +47,7 @@ void PE_SetColorRandom(ParticleEmitter* pe) {
 		CP_ColorHSL_Create(
 			CP_Random_RangeInt(0, 360),
 			100,
-			80,
+			60,
 			255
 		)
 	);
@@ -88,6 +88,7 @@ void enqueue(ParticleEmitter* pe) {
 	if (pe->count > PE_PARTICLE_ARR_SIZE) pe->count = PE_PARTICLE_ARR_SIZE;
 	pe->tail++;
 	pe->tail %= PE_PARTICLE_ARR_SIZE;
+	if (pe->tail == pe->head) pe->head++; //tail and head collided, move head up one.
 }
 
 void PE_AddMany(ParticleEmitter* pe, int amount) {
@@ -121,11 +122,10 @@ void PE_Run(ParticleEmitter* pe) {
 		pe->particles[index].speed = CP_Vector_Add(pe->particles[index].acceleration, pe->particles[index].speed);
 		pe->particles[index].acceleration.y += pe->particles[index].weight;
 
-		pe->particles[index].color.a -= pe->effects[PE_EFFECT_FADEOUT];
-		if (pe->particles[index].color.a <= 0) pe->particles[index].color.a = 0;
+		if (pe->particles[index].color.a - pe->effects[PE_EFFECT_FADEOUT] <= 0) dequeue(pe);
+		else pe->particles[index].color.a -= pe->effects[PE_EFFECT_FADEOUT];
 
 		draw(pe->particles[index]);
-
 
 		pe->particles[index].lifespan--;
 		if (pe->particles[index].lifespan <= 0) {
