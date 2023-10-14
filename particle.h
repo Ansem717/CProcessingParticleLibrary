@@ -11,8 +11,6 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
-#include "ParticleEmitter.h"
-
 typedef struct Particle {
 	CP_Vector position, speed, acceleration; 
 	float size, theta, weight, lifespan;

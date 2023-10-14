@@ -8,6 +8,8 @@
 // Copyright © 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
+#include "cprocessing.h"
+#include "ParticleEmitter.h"
 #include "particle.h"
 #include <math.h>
 

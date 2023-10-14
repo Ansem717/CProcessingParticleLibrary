@@ -5,14 +5,11 @@
 //
 // brief:	Header for Particle system
 //
-// Copyright © 2020 DigiPen, All rights reserved.
+// Copyright © 2023 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #ifndef PARTICLE_EMITTER_H
 #define PARTICLE_EMITTER_H
-
-#include "cprocessing.h"
-//#include "particle.h"
 
 #define PE_PARTICLE_ARR_SIZE 50
 #define PE_EFFECT_ARR_SIZE 5
@@ -35,6 +32,9 @@ typedef enum PE_SHAPE {
 	PE_SHAPE_SQUARE
 } PE_SHAPE;
 
+#include "cprocessing.h"
+#include "particle.h"
+
 typedef struct ParticleEmitter {
 	CP_Vector position;
 	PE_MODE mode; //PE_MODE_DIRECTIONAL emits the particles in a specific direction; PE_MODE_RADIAL emits the particles in a random circle.
@@ -45,12 +45,15 @@ typedef struct ParticleEmitter {
 
 	float size; //Initial size of particle
 	PE_SHAPE shape; //Shape of each particle.
-	CP_Color color; //Color of each particle.
+	CP_Color col; //Color of each particle.
 	float speed; //Initial speed of particle.
 	float acceleration; //Gain (or negative for Loss) of speed over time.
 	float weight; //Higher weight, the more relevant gravity; Weight = 0 means no fall. 
 	int lifespan; //Number of frames the particle will exist
-	Particle particles[PE_PARTICLE_ARR_SIZE]; //Particle Array
+
+	Particle particles[50]; //particles array
+	int head; //head of the array
+	int tail; //tail of the array
 } ParticleEmitter;
 
 ParticleEmitter PE_Emitter_New(CP_Vector position);
@@ -66,6 +69,7 @@ void PE_Effect_ClearEffects(ParticleEmitter* pe);
 
 void PE_Particle_SetSize(ParticleEmitter* pe, float size);
 void PE_Particle_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
+void PE_Partcile_SetColorRandom(ParticleEmitter* pe);
 void PE_Particle_SetColor(ParticleEmitter* pe, CP_Color color);
 void PE_Particle_SetSpeed(ParticleEmitter* pe, float speed);
 void PE_Particle_SetAcceleration(ParticleEmitter* pe, float acceleration);
