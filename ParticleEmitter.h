@@ -14,10 +14,15 @@
 #define PE_PARTICLE_ARR_SIZE 50
 #define PE_EFFECT_ARR_SIZE 5
 
-typedef enum PE_MODE {
-	PE_MODE_DIRECTIONAL,
-	PE_MODE_RADIAL
-} PE_MODE ;
+typedef enum PE_TARGET_MODE {
+	PE_TARGET_MODE_DIRECTIONAL,
+	PE_TARGET_MODE_RADIAL
+} PE_TARGET_MODE;
+
+typedef enum PE_DELAY_MODE {
+	PE_DELAY_MODE_SECONDS,
+	PE_DELAY_MODE_FRAMES
+} PE_DELAY_MODE;
 
 typedef enum PE_EFFECT {
 	PE_EFFECT_FADEOUT,	//0 ;; Used as array index in pe->effects[]. Value returns 0 (false) or 1 (true).
@@ -37,7 +42,7 @@ typedef enum PE_SHAPE {
 
 typedef struct ParticleEmitter {
 	CP_Vector position;
-	PE_MODE mode; //PE_MODE_DIRECTIONAL emits the particles in a specific direction; PE_MODE_RADIAL emits the particles in a random circle.
+	PE_TARGET_MODE targetMode; //PE_MODE_DIRECTIONAL emits the particles in a specific direction; PE_MODE_RADIAL emits the particles in a random circle.
 	float directionalAngle; //0 degrees is north
 	float directionalRange; //0 means all particles have no randomness when spawned.
 	int count; //current number of particles; LIMIT IS 50 (PE_PARTICLE_ARR_SIZE)
@@ -54,14 +59,22 @@ typedef struct ParticleEmitter {
 	Particle particles[50]; //particles array
 	int head; //head of the array
 	int tail; //tail of the array
+
+	float delaySeconds; //delay in seconds to slow down particle generation
+	int delayFrames; //delay in frames to slow down particle generation
+	PE_DELAY_MODE delayMode; //Mode to abide which delay
+	float _delayTimestamp; //most recent timestamp for the delay check
 } ParticleEmitter;
 
 ParticleEmitter PE_Emitter_New(CP_Vector position);
 
 void PE_Emitter_SetPosition(ParticleEmitter* pe, CP_Vector position);
-void PE_Emitter_SetMode(ParticleEmitter* pe, PE_MODE mode);
+void PE_Emitter_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode);
 void PE_Emitter_SetAngle(ParticleEmitter* pe, float theta);
 void PE_Emitter_SetAngleRange(ParticleEmitter* pe, float thetaRange);
+void PE_Emitter_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds);
+void PE_Emitter_SetDelayFrames(ParticleEmitter* pe, int delayFrames);
+void PE_Emitter_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE);
 
 void PE_Effect_AddEffect(ParticleEmitter* pe, PE_EFFECT effect);
 void PE_Effect_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);

@@ -15,20 +15,25 @@
 ParticleEmitter PE_Emitter_New(CP_Vector position) {
 	ParticleEmitter pe = {
 		.position = position,
-		.mode = PE_MODE_DIRECTIONAL,
+		.targetMode = PE_TARGET_MODE_DIRECTIONAL,
 		.size = 10,
 		.speed = 5,
 		.lifespan = 100,
 		.weight = 0.1,
-		.col = CP_Color_Create(0,0,0,255)
+		.col = CP_Color_Create(0,0,0,255),
+		.delayMode = PE_DELAY_MODE_FRAMES
 	};
 	return pe;
 }
 
 void PE_Emitter_SetPosition(ParticleEmitter* pe, CP_Vector position) { pe->position = position; }
-void PE_Emitter_SetMode(ParticleEmitter* pe, PE_MODE mode) { pe->mode = mode; }
+void PE_Emitter_SetTargetMode(ParticleEmitter* pe, PE_TARGET_MODE mode) { pe->targetMode = mode; }
 void PE_Emitter_SetAngle(ParticleEmitter* pe, float theta) { pe->directionalAngle = theta; }
 void PE_Emitter_SetAngleRange(ParticleEmitter* pe, float thetaRange) { pe->directionalRange = thetaRange; }
+
+void PE_Emitter_SetDelaySeconds(ParticleEmitter* pe, float delaySeconds) { pe->delaySeconds = delaySeconds; }
+void PE_Emitter_SetDelayFrames(ParticleEmitter* pe, int delayFrames) { pe->delayFrames = delayFrames; }
+void PE_Emitter_SetDelayMode(ParticleEmitter* pe, PE_DELAY_MODE mode) { pe->delayMode = mode; }
 
 void PE_Effect_AddEffect(ParticleEmitter* pe, PE_EFFECT effect) { pe->effects[effect] = 1; }
 void PE_Effect_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect) { pe->effects[effect] = 0; }
@@ -47,7 +52,7 @@ float getRandomTheta(float origin, float range) {
 	return CP_Random_RangeFloat(origin - range, origin + range);
 }
 
-Particle removeParticleFromFront(ParticleEmitter* pe, int index) {
+void removeParticleFromFront(ParticleEmitter* pe, int index) {
 	for (int j = index; j > 0; j--) {
 		//J will start at given index, ex: 4... [z x c v b n m] starts at [z x c v (b) n m]
 		//pe[4] becomes pe[3]. So the array is now [z x c v v n m]
@@ -56,12 +61,22 @@ Particle removeParticleFromFront(ParticleEmitter* pe, int index) {
 	}
 }
 
+void dequeue(ParticleEmitter *pe) {
+	pe->head++;
+	pe->count--;
+}
+
 void PE_Particle_Add(ParticleEmitter* pe) {
+
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) {
+		if (CP_System_GetFrameCount() < pe->_delayTimestamp + pe->delayFrames) return;
+	} else if (CP_System_GetSeconds() < pe->_delayTimestamp + pe->delaySeconds) return;
+
 	float theta = getRandomTheta(180, 180); //RADIAL is between 0 and 360
-	if (pe->mode == PE_MODE_DIRECTIONAL) {
+	if (pe->targetMode == PE_TARGET_MODE_DIRECTIONAL) {
 		theta = getRandomTheta(pe->directionalAngle, pe->directionalRange);
 	}
-	pe->particles[pe->count] = newParticle(
+	pe->particles[pe->tail] = newParticle(
 		pe->position,
 		pe->speed,
 		pe->acceleration,
@@ -72,18 +87,24 @@ void PE_Particle_Add(ParticleEmitter* pe) {
 		pe->shape,
 		pe->col
 	);
-	pe->count += 1;
-	pe->count %= 50;
+	pe->count++;
+	if (pe->count > PE_PARTICLE_ARR_SIZE) pe->count = PE_PARTICLE_ARR_SIZE;
+	pe->tail++;
+	pe->tail %= PE_PARTICLE_ARR_SIZE;
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = CP_System_GetFrameCount();
+	else pe->_delayTimestamp = CP_System_GetSeconds();
 }
 
 void PE_Emitter_Run(ParticleEmitter* pe) {
-	for (int i = 0; i < 50; i++) {
-		pe->particles[i].position = CP_Vector_Add(pe->particles[i].position, pe->particles[i].speed);
-		pe->particles[i].speed = CP_Vector_Add(pe->particles[i].acceleration, pe->particles[i].speed);
-		pe->particles[i].acceleration.y += pe->particles[i].weight;
-		draw(pe->particles[i]);
-		if (pe->particles[i].lifespan <= 0) {
-
+	for (int i = pe->head; i < pe->count + pe->head; i++) {
+		int index = i % PE_PARTICLE_ARR_SIZE;
+		pe->particles[index].position = CP_Vector_Add(pe->particles[index].position, pe->particles[index].speed);
+		pe->particles[index].speed = CP_Vector_Add(pe->particles[index].acceleration, pe->particles[index].speed);
+		pe->particles[index].acceleration.y += pe->particles[index].weight;
+		draw(pe->particles[index]);
+		pe->particles[index].lifespan--;
+		if (pe->particles[index].lifespan <= 0) {
+			dequeue(pe);
 		}
 	}
 }
