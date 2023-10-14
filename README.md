@@ -59,9 +59,9 @@ Create a new Particle Emitter at a CP_Vector position.
 ```c
 ParticleEmitter PE_New(CP_Vector position);
 ```
-# Parameters
+### Parameters
 - position (CP_Vector) - the origin position of the emitter on the screen.
-# Return
+### Return
 - ParticleEmitter - An emitter at the given position.
 ## Example
 ```c
