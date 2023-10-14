@@ -236,12 +236,12 @@ void init() {
 # PE_AddEffect
 Adds an effect to the particle emitter set to the given value. Effects include:
 - `PE_EFFECT_FADEOUT` :: Particles fadeout during lifetime at a rate provided by the given float. Values best between 2 and 10. Particles fully faded out are dequeued.
-- `PE_EFFECT_FLASH` :: Particles flash back and force. Given float determines the increase of color lightness. Values best at around 60 value with a dark base color. Use PE_setDelayFlash to determine how fast it flashes.
-- `PE_EFFECT_SPIN` :: Particles rotate clockwise during lifetime . Only noticable with PE_SHAPE_SQUARE. Values best between 5 and 30.
+- `PE_EFFECT_FLASH` :: Particles flash back and forth between original color and the same color with lightness increased by given float. Values best at around 60 value with a dark base color. Use PE_setDelayFlash to determine how fast it flashes.
+- `PE_EFFECT_SPIN` :: Particles rotate clockwise during lifetime. Only noticable with PE_SHAPE_SQUARE. Values best between 5 and 30.
 - `PE_EFFECT_SHRINK` :: Particles shrink during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f. Particles fully shrunk are dequeued.
 - `PE_EFFECT_GROW` :: Particles grow during lifetime at a rate provided by the given float. Values best between 0.1f and 1.0f.
   - If growLimit is set, then particles will either stop or dequeue when hitting the growlimit, based on the chosen PE_GROW_MODE.
-  - If PE_EFFECT_GROW and PE_EFFECT_SHRINK are both active, the Particle will waver between `size - SHRINK VALUE` and `size + GROW VALUE`. Use PE_setDelayGrowShrink to determine how fast it wavers.
+  - If PE_EFFECT_GROW and PE_EFFECT_SHRINK are both active, the Particle will waver between `size - SHRINK VALUE` and `size + GROW VALUE`. Use PE_setDelayGrowShrink to determine how fast it wavers. When using Shrink and Grow together, given values are best as integers relative to the original size. 
 ## Function
 ```c
 void PE_AddEffect(ParticleEmitter* pe, PE_EFFECT effect, float value);
@@ -272,8 +272,12 @@ void init() {
 }
 ```
 ```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
   PE_SetDelayMode(&pe, PE_DELAY_MODE_SECONDS); //use SECONDS
-  ...
+
   PE_AddEffect(&pe, PE_EFFECT_SHRINK, 5);
   PE_AddEffect(&pe, PE_EFFECT_GROW, 5);
   //Both grow and shrink means we will swap between SIZE - 5 (shrink) and SIZE + 5 (grow).
