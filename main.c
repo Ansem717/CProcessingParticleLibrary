@@ -31,8 +31,8 @@ void game_init(void) {
 	PE_SetLifespan(&peL, 100);
 	PE_SetDelayMode(&peL, PE_DELAY_MODE_FRAMES);
 	PE_SetDelayFrames(&peL, 0);
-	PE_SetWeight(&peR, 0.02);
-	PE_SetWeight(&peL, 0.02);
+	PE_SetWeight(&peR, 0.02f);
+	PE_SetWeight(&peL, 0.02f);
 	PE_SetSize(&peR, 5);
 	PE_SetSize(&peL, 12);
 	PE_SetShape(&peL, PE_SHAPE_SQUARE);

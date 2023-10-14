@@ -146,7 +146,7 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <CompileAs>CompileAsC</CompileAs>
       <PreprocessorDefinitions>_MBCS;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UndefinePreprocessorDefinitions>_CONSOLE</UndefinePreprocessorDefinitions>
@@ -195,12 +195,12 @@ xcopy "$(ProjectDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="particle.c" />
-    <ClCompile Include="ParticleEmitter.c" />
+    <ClCompile Include="ParticleEmitter\particle.c" />
+    <ClCompile Include="ParticleEmitter\ParticleEmitter.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="particle.h" />
-    <ClInclude Include="ParticleEmitter.h" />
+    <ClInclude Include="ParticleEmitter\particle.h" />
+    <ClInclude Include="ParticleEmitter\ParticleEmitter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

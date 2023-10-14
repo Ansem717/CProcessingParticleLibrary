@@ -13,7 +13,7 @@
 #include "particle.h"
 #include <math.h>
 
-Particle newParticle(CP_Vector position, float speed, float acceleration, float size, float theta, float weight, float lifespan, PE_SHAPE shape, CP_Color color) {
+Particle newParticle(CP_Vector position, float speed, float acceleration, float size, float theta, float weight, int lifespan, PE_SHAPE shape, CP_Color color) {
 	Particle p = {
 		.position = position,
 		.size = size,
@@ -23,8 +23,8 @@ Particle newParticle(CP_Vector position, float speed, float acceleration, float 
 		.color = color
 	};
 	theta = CP_Math_Radians(theta);
-	p.speed = CP_Vector_Scale(CP_Vector_Set(sin(theta), -cos(theta)), speed);
-	p.acceleration = CP_Vector_Scale(CP_Vector_Set(sin(theta), -cos(theta)), acceleration);
+	p.speed = CP_Vector_Scale(CP_Vector_Set((float)sin(theta), (float)-cos(theta)), speed);
+	p.acceleration = CP_Vector_Scale(CP_Vector_Set((float)sin(theta), (float)-cos(theta)), acceleration);
 	return p;
 }
 
@@ -37,7 +37,7 @@ void draw(Particle p) {
 	} else {
 		//PE_SHAPE_SQUARE
 		CP_Settings_RectMode(CP_POSITION_CENTER);
-		CP_Graphics_DrawRect(p.position.x, p.position.y, p.size, p.size);
+		CP_Graphics_DrawRectAdvanced(p.position.x, p.position.y, p.size, p.size, p.rotation, 0);
 	}
 	CP_Settings_Restore(); //Restore previous CPSettings 
 }

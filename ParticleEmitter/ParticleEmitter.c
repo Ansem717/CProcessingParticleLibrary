@@ -19,7 +19,7 @@ ParticleEmitter PE_New(CP_Vector position) {
 		.size = 10,
 		.speed = 5,
 		.lifespan = 100,
-		.weight = 0.1,
+		.weight = 0.1f,
 		.col = CP_Color_Create(0,0,0,255),
 		.delayMode = PE_DELAY_MODE_FRAMES
 	};
@@ -100,7 +100,7 @@ void PE_AddMany(ParticleEmitter* pe, int amount) {
 		enqueue(pe);
 	}
 
-	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = CP_System_GetFrameCount();
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
 	else pe->_delayTimestamp = CP_System_GetSeconds();
 }
 
@@ -111,7 +111,7 @@ void PE_Add(ParticleEmitter* pe) {
 
 	enqueue(pe);
 
-	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = CP_System_GetFrameCount();
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
 	else pe->_delayTimestamp = CP_System_GetSeconds();
 }
 
@@ -123,7 +123,7 @@ void PE_Run(ParticleEmitter* pe) {
 		pe->particles[index].acceleration.y += pe->particles[index].weight;
 
 		if (pe->particles[index].color.a - pe->effects[PE_EFFECT_FADEOUT] <= 0) dequeue(pe);
-		else pe->particles[index].color.a -= pe->effects[PE_EFFECT_FADEOUT];
+		else pe->particles[index].color.a -= (unsigned char)pe->effects[PE_EFFECT_FADEOUT];
 
 		draw(pe->particles[index]);
 
