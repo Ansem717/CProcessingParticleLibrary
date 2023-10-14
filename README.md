@@ -18,7 +18,7 @@ To use the library, you only need to include the emitter file.
 
 # Usage
 Refer to the functions below to learn how to use the Particle Emitter library.
-- [PE_New](https://github.com/Ansem717/CProcessingParticleLibrary/new/main?readme=1#pe_new)
+- [PE_New](https://github.com/Ansem717/CProcessingParticleLibrary#pe_new)
 - PE_SetPosition
 - PE_SetTargetMode
 - PE_SetAngle
