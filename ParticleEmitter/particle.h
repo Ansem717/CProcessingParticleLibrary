@@ -5,7 +5,7 @@
 //
 // brief:	Header file for Particle
 //
-// Copyright © 2020 DigiPen, All rights reserved.
+// Copyright © 2023 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #ifndef PARTICLE_H

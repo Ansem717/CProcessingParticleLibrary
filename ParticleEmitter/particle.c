@@ -5,7 +5,7 @@
 //
 // brief:	Particle Model (simply holds data)
 //
-// Copyright © 2020 DigiPen, All rights reserved.
+// Copyright © 2023 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #include "cprocessing.h"
