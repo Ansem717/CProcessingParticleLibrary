@@ -14,46 +14,34 @@
 #include "cprocessing.h"
 #include "ParticleEmitter/ParticleEmitter.h"
 
-ParticleEmitter peL;
-ParticleEmitter peR;
+ParticleEmitter pe;
 
 void game_init(void) {
 	CP_System_SetWindowSize(800, 800);
-	peL = PE_New(CP_Vector_Set(380, 400));
-	peR = PE_New(CP_Vector_Set(420, 400));
-	PE_SetColor(&peR, CP_Color_Create(150, 150, 150, 100));
-	PE_SetColor(&peL, CP_Color_Create(150, 150, 150, 100));
-	PE_SetAngle(&peL, -65);
-	PE_SetAngle(&peR, 65);
-	PE_SetAngleRange(&peL, 15);
-	PE_SetAngleRange(&peR, 15);
-	PE_SetLifespan(&peR, 100);
-	PE_SetLifespan(&peL, 100);
-	PE_SetDelayMode(&peL, PE_DELAY_MODE_FRAMES);
-	PE_SetDelayFrames(&peL, 0);
-	PE_SetWeight(&peR, 0.02f);
-	PE_SetWeight(&peL, 0.02f);
-	PE_SetSize(&peR, 5);
-	PE_SetSize(&peL, 12);
-	PE_SetShape(&peL, PE_SHAPE_SQUARE);
-	PE_SetSpeed(&peL, 4);
-	PE_SetSpeed(&peR, 4);
+	pe = PE_New(CP_Vector_Set(380, 400));
+	PE_SetColor(&pe, CP_Color_Create(255, 255, 0, 255));
+	PE_SetAngle(&pe, -40);
+	PE_SetAngleRange(&pe, 50);
+	PE_SetLifespan(&pe, 200);
+	PE_SetDelayMode(&pe, PE_DELAY_MODE_FRAMES);
+	PE_SetDelayFrames(&pe, 5);
+	PE_SetWeight(&pe, 0.0f);
+	PE_SetSize(&pe, 100);
+	PE_SetShape(&pe, PE_SHAPE_SQUARE);
 
-	PE_AddEffect(&peL, PE_EFFECT_FADEOUT, 10);
-	PE_AddEffect(&peR, PE_EFFECT_FADEOUT, 5);
+	PE_AddEffect(&pe, PE_EFFECT_FADEOUT, 2);
+	PE_AddEffect(&pe, PE_EFFECT_SPIN, 10);
 }
 
 void game_update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
-	PE_Run(&peL);
-	PE_Run(&peR);
+	PE_Run(&pe);
 
-	PE_SetColorRandom(&peL);
-	PE_Add(&peL);
+	//PE_SetColorRandom(&pe);
 
-	if (CP_Input_KeyReleased(KEY_SPACE)) {
-		PE_AddMany(&peL, 3);
-		PE_AddMany(&peR, 3);
+	if (!CP_Input_KeyDown(KEY_SPACE)) {
+		PE_SetSpeed(&pe, 0);
+		PE_Add(&pe);
 	}
 }
 

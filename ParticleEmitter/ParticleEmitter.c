@@ -91,28 +91,29 @@ void enqueue(ParticleEmitter* pe) {
 	if (pe->tail == pe->head) pe->head++; //tail and head collided, move head up one.
 }
 
-void PE_AddMany(ParticleEmitter* pe, int amount) {
+int isStillWaiting(ParticleEmitter* pe) {
 	if (pe->delayMode == PE_DELAY_MODE_FRAMES) {
-		if (CP_System_GetFrameCount() < pe->_delayTimestamp + pe->delayFrames) return;
-	} else if (CP_System_GetSeconds() < pe->_delayTimestamp + pe->delaySeconds) return;
+		return (CP_System_GetFrameCount() < pe->_delayTimestamp + pe->delayFrames);
+	} else return (CP_System_GetSeconds() < pe->_delayTimestamp + pe->delaySeconds);
+}
+
+void setTimestamp(ParticleEmitter* pe) {
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
+	else pe->_delayTimestamp = CP_System_GetSeconds();
+}
+
+void PE_AddMany(ParticleEmitter* pe, int amount) {
+	if (isStillWaiting(pe)) return;
 
 	for (int i = 0; i < amount; i++) {
 		enqueue(pe);
 	}
 
-	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
-	else pe->_delayTimestamp = CP_System_GetSeconds();
+	setTimestamp(pe);
 }
 
 void PE_Add(ParticleEmitter* pe) {
-	if (pe->delayMode == PE_DELAY_MODE_FRAMES) {
-		if (CP_System_GetFrameCount() < pe->_delayTimestamp + pe->delayFrames) return;
-	} else if (CP_System_GetSeconds() < pe->_delayTimestamp + pe->delaySeconds) return;
-
-	enqueue(pe);
-
-	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
-	else pe->_delayTimestamp = CP_System_GetSeconds();
+	PE_AddMany(pe, 1);
 }
 
 void PE_Run(ParticleEmitter* pe) {
@@ -125,11 +126,11 @@ void PE_Run(ParticleEmitter* pe) {
 		if (pe->particles[index].color.a - pe->effects[PE_EFFECT_FADEOUT] <= 0) dequeue(pe);
 		else pe->particles[index].color.a -= (unsigned char)pe->effects[PE_EFFECT_FADEOUT];
 
-		draw(pe->particles[index]);
+		pe->particles[index].rotation += (float)pe->effects[PE_EFFECT_SPIN];
 
 		pe->particles[index].lifespan--;
-		if (pe->particles[index].lifespan <= 0) {
-			dequeue(pe);
-		}
+		if (pe->particles[index].lifespan <= 0) dequeue(pe);
+
+		draw(pe->particles[index]);
 	}
 }
