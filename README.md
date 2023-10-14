@@ -6,8 +6,8 @@ Created at Digipen
 
 ## Download
 The only necessary folder to download is the ParticleEmitter folder in this repo.  
-[CLICK HERE TO DOWNLOAD ZIP](https://minhaskamal.github.io/DownGit/#/home?url=https:%2F%2Fgithub.com%2FAnsem717%2FCProcessingParticleLibrary%2Ftree%2Fmain%2FParticleEmitter).  
-*Will likely open a new tab to DownGit. Special thanks to Minhas Kamal for this app.*  
+[CONTROL + CLICK HERE TO DOWNLOAD ZIP](https://minhaskamal.github.io/DownGit/#/home?url=https:%2F%2Fgithub.com%2FAnsem717%2FCProcessingParticleLibrary%2Ftree%2Fmain%2FParticleEmitter).  
+*Will open IN SAME TAB to DownGit. Special thanks to Minhas Kamal for this app.*  
 Extract the ParticleEmitter folder into your repository.  
 
 ## Include
