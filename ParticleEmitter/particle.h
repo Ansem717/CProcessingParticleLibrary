@@ -13,8 +13,8 @@
 
 typedef struct Particle {
 	CP_Vector position, speed, acceleration; 
-	float size, weight, rotation, flashTimestamp;
-	int lifespan, flashToggle;
+	float size, _size, weight, rotation, flashTimestamp, growShrinkTimestamp;
+	int lifespan, flashToggle, sizeToggle;
 	PE_SHAPE shape;
 	CP_Color color, _color;
 } Particle ;

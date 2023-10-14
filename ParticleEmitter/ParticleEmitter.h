@@ -74,6 +74,8 @@ typedef struct ParticleEmitter {
 	int delayFlashFrames; //Flash Delay in Frames
 	float growLimit; //if a particle is growing, it dequeus or stops (GROW_MODE) when it reaches this limit.
 	PE_GROW_MODE growMode; //determines if particle is deqeueued or not when it reaches growLimit
+	float delayGrowShrinkSeconds; //Delay (Seconds) for growing and shrinking the cube size
+	int delayGrowShrinkFrames; //Delay (Frames) for growing and shrinking the cube size
 } ParticleEmitter;
 
 ParticleEmitter PE_New(CP_Vector position);
@@ -93,6 +95,8 @@ void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds);
 void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames);
 void PE_SetGrowLimit(ParticleEmitter* pe, float growLimit);
 void PE_SetGrowMode(ParticleEmitter* pe, PE_GROW_MODE mode);
+void PE_SetDelayGrowShrinkSeconds(ParticleEmitter* pe, float delayGrowShrinkSeconds);
+void PE_SetDelayGrowShrinkFrames(ParticleEmitter* pe, int delayGrowShrinkFrames);
 
 void PE_SetSize(ParticleEmitter* pe, float size);
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape);

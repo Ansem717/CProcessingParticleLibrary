@@ -17,12 +17,14 @@ Particle newParticle(CP_Vector position, float speed, float acceleration, float 
 	Particle p = {
 		.position = position,
 		.size = size,
+		._size = size,
 		.weight = weight,
 		.lifespan = lifespan,
 		.shape = shape,
 		.color = color,
 		._color = color,
-		.flashToggle = 1
+		.flashToggle = 1,
+		.sizeToggle = 1
 	};
 	theta = CP_Math_Radians(theta);
 	p.speed = CP_Vector_Scale(CP_Vector_Set((float)sin(theta), (float)-cos(theta)), speed);

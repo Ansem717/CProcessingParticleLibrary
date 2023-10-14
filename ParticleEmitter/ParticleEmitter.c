@@ -42,6 +42,8 @@ void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds) { pe-
 void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames) { pe->delayFlashFrames = delayFlashFrames; }
 void PE_SetGrowLimit(ParticleEmitter* pe, float growLimit) { pe->growLimit = growLimit; }
 void PE_SetGrowMode(ParticleEmitter* pe, PE_GROW_MODE mode) { pe->growMode = mode; }
+void PE_SetDelayGrowShrinkSeconds(ParticleEmitter* pe, float delayGrowShrinkSeconds) { pe->delayGrowShrinkSeconds = delayGrowShrinkSeconds; }
+void PE_SetDelayGrowShrinkFrames(ParticleEmitter* pe, int delayGrowShrinkFrames) { pe->delayGrowShrinkFrames = delayGrowShrinkFrames; }
 
 void PE_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
@@ -107,6 +109,12 @@ int isStillWaitingFlash(ParticleEmitter* pe, Particle p) {
 	} else return (CP_System_GetSeconds() < p.flashTimestamp + pe->delayFlashSeconds);
 }
 
+int isStillWaitingGrowShrink(ParticleEmitter* pe, Particle p) {
+	if (pe->delayMode == PE_DELAY_MODE_FRAMES) {
+		return (CP_System_GetFrameCount() < p.growShrinkTimestamp + pe->delayGrowShrinkFrames);
+	} else return (CP_System_GetSeconds() < p.growShrinkTimestamp + pe->delayGrowShrinkSeconds);
+}
+
 void setTimestamp(ParticleEmitter* pe) {
 	if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->_delayTimestamp = (float)CP_System_GetFrameCount();
 	else pe->_delayTimestamp = CP_System_GetSeconds();
@@ -114,9 +122,7 @@ void setTimestamp(ParticleEmitter* pe) {
 
 void PE_AddMany(ParticleEmitter* pe, int amount) {
 	if (isStillWaiting(pe)) return;
-	for (int i = 0; i < amount; i++) {
-		enqueue(pe);
-	}
+	for (int i = 0; i < amount; i++) enqueue(pe);
 	setTimestamp(pe);
 }
 
@@ -159,18 +165,37 @@ void PE_Run(ParticleEmitter* pe) {
 			else pe->particles[index].flashTimestamp = CP_System_GetSeconds();
 		}
 
-		//SHRINK
-		if (pe->particles[index].size - pe->effects[PE_EFFECT_SHRINK] <= 0) dequeue(pe);
-		else pe->particles[index].size -= pe->effects[PE_EFFECT_SHRINK];
+		if (pe->effects[PE_EFFECT_SHRINK] && pe->effects[PE_EFFECT_GROW]) {
+			//Both GROW AND SHRINK are active
+			//The particle should juggle between size+grow and size-shrink
+			if (!isStillWaitingGrowShrink(pe, pe->particles[index])) {
+				if (pe->particles[index].sizeToggle == 1) {
+					//GROW
+					pe->particles[index].size = pe->particles[index]._size + pe->effects[PE_EFFECT_GROW];
+					pe->particles[index].sizeToggle = -1;
+				} else {
+					//SHRINK
+					pe->particles[index].size = pe->particles[index]._size - pe->effects[PE_EFFECT_SHRINK];
+					pe->particles[index].sizeToggle = 1;
+				}
 
-		//GROW
-		if (pe->growLimit) {
-			if (pe->particles[index].size + pe->effects[PE_EFFECT_GROW] >= pe->growLimit) {
-				if (pe->growMode == PE_GROW_MODE_DEQUEUE) dequeue(pe);
+				if (pe->delayMode == PE_DELAY_MODE_FRAMES) pe->particles[index].growShrinkTimestamp = (float)CP_System_GetFrameCount();
+				else pe->particles[index].growShrinkTimestamp = CP_System_GetSeconds();
 			}
-			else pe->particles[index].size += pe->effects[PE_EFFECT_GROW];
 		} else {
-			pe->particles[index].size += pe->effects[PE_EFFECT_GROW];
+			//Shrink or Grow or neither
+			//SHRINK
+			if (pe->particles[index].size - pe->effects[PE_EFFECT_SHRINK] <= 0) dequeue(pe);
+			else { 
+				pe->particles[index].size -= pe->effects[PE_EFFECT_SHRINK];
+				pe->particles[index]._size = pe->particles[index].size; //save size
+			}
+
+			//GROW
+			if (!pe->growLimit || pe->particles[index].size + pe->effects[PE_EFFECT_GROW] < pe->growLimit) {
+				pe->particles[index].size += pe->effects[PE_EFFECT_GROW];
+				pe->particles[index]._size = pe->particles[index].size; //save size
+			} else if (pe->growMode == PE_GROW_MODE_DEQUEUE) dequeue(pe);
 		}
 
 		//LIFESPAN
