@@ -285,12 +285,49 @@ void init() {
 }
 ```
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
-<!--# PE_SetDelayMode
-Sets the Delay Mode for calculating emission delays.
+# PE_RemoveEffect
+Removes the given effect from the Particle Emitter
 ## Function
 ```c
 void PE_RemoveEffect(ParticleEmitter* pe, PE_EFFECT effect);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- effect (PE_EFFECT) - the effect to remove
+### Return
+This function does not return anything.
+## Example
+```c
+void update() {
+  if (CP_Input_KeyReleased(KEY_SPACE)) {
+    PE_RemoveEffect(&pe, PE_EFFECT_GROW);
+  }
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_ClearEffects
+Clears all the effects on the particle emitter
+## Function
+```c
 void PE_ClearEffects(ParticleEmitter* pe);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+### Return
+This function does not return anything.
+## Example
+```c
+void update() {
+  if (CP_Input_KeyReleased(KEY_SPACE)) {
+    PE_ClearEffects(&pe);
+  }
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+<!--# PE_SetDelayFrames
+Sets the number of frames to wait between particle emissions and effects. Only usable if PE_DELAY_MODE_FRAMES is set.
+## Function
+```c
 void PE_SetDelayFlashSeconds(ParticleEmitter* pe, float delayFlashSeconds);
 void PE_SetDelayFlashFrames(ParticleEmitter* pe, int delayFlashFrames);
 void PE_SetGrowMode(ParticleEmitter* pe, PE_GROW_MODE mode);
