@@ -491,7 +491,7 @@ void init() {
 }
 ```
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
-# PE_SetSize
+# PE_SetShape
 Sets the shape of the particle:
 - PE_SHAPE_CIRCLE :: Default. Sets the shape to a circle.
 - PE_SHAPE_SQUARE :: Sets the shape to a sqaure.
@@ -515,7 +515,7 @@ void init() {
 }
 ```
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
-# PE_SetColor
+# PE_SetColor_RGB
 Sets the Color of the particles to a given CP_Color
 ## Function
 ```c
@@ -535,12 +535,200 @@ void init() {
   PE_SetColor(&pe, CP_Color_Create(255, 0, 0, 255)); //Set the particles to red
 }
 ```
-[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
-# PE_SetColorRandom
-Sets the color of the particles to a random hue with 100% saturation and 50% lightness.
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)\
+# PE_SetColor_HSL
+Sets the Color of the particles to a given CP_ColorHSL
 ## Function
 ```c
-void PE_SetColorRandom(ParticleEmitter* pe);
+void PE_SetColor(ParticleEmitter* pe, CP_ColorHSL color);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- color (CP_ColorHSL) - the color of the particles
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
+  PE_SetColor_HSL(&pe, CP_ColorHSL_Create(0, 100, 50, 255)); //Set the particles to red
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetColorRandom_[H][S][L]
+Sets the color of the particles randomly based on the function used. Start with `PE_SetColorRandom_` and then choose any combination of H, S, or L to randomize.
+## Function
+```c
+void PE_SetColorRandom_HSL(ParticleEmitter* pe); //random all three
+void PE_SetColorRandom_SL(ParticleEmitter* pe, int hue); //Random Saturation and Lightness
+void PE_SetColorRandom_HL(ParticleEmitter* pe, int sat); //Random Hue and Lightness
+void PE_SetColorRandom_HS(ParticleEmitter* pe, int light); //Random Hue and Saturation
+void PE_SetColorRandom_H(ParticleEmitter* pe, int sat, int light); //Random Hue
+void PE_SetColorRandom_S(ParticleEmitter* pe, int hue, int light); //Random Saturation
+void PE_SetColorRandom_L(ParticleEmitter* pe, int hue, int sat); //Random Lightness
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- hue (int) - given hue value
+- sat (int) - given saturation value
+- light (int) - given lightness value
+### Return
+This function does not return anything.
+## Example
+```c
+void update() {
+  PE_SetColorRandom_H(&pe, 100, 40); //a new random hue with 100% saturation and 40% light. Great for PE_EFFECT_FLASH.
+  PE_Add(&pe);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetSpeed
+Sets the speed of the particle.
+## Function
+```c
+void PE_SetSpeed(ParticleEmitter* pe, float speed);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- speed (float) - the speed of the particle
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
+  PE_SetSpeed(&pe, 10);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetAcceleration
+Sets the acceleration of the particle. Caution: Negative acceleration can reverse particle directions. Values are best between `-0.5f` and `0.5f`.
+<!-- I added it but didn't mess around with it. 
+It worked but then I realized that particles don't usually need an acceleration so I ignored it but left it in. -->
+## Function
+```c
+void PE_SetAcceleration(ParticleEmitter* pe, float acceleration);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- acceleration (float) - the acceleration of the particle
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
+  PE_SetAcceleration(&pe, 0.02f);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetWeight
+Sets the particles weight - or in other words, the speed the particle falls down the vertical axis. Values are best in floats between `0.0f` and `1.0f`. Weight of 0 means particles don't fall.
+<!-- I liked its functionality and was comfortable with the simplicity. -->
+## Function
+```c
+void PE_SetWeight(ParticleEmitter* pe, float weight);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- weight (float) - the acceleration of the particle
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
+  PE_SetWeight(&pe, 0.02f);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_SetLifespan
+Sets the number of frames the particles stay on screen.
+## Function
+```c
+void PE_SetLifespan(ParticleEmitter* pe, int lifespan);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- lifespan (int) - the lifespan of the particle
+### Return
+This function does not return anything.
+## Example
+```c
+ParticleEmitter pe;
+
+void init() {
+  pe = PE_New(CP_Vector_Set(400,400));
+  PE_SetLifespan(&pe, 150);
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_Add
+Adds one particle to be emitted. The particle will spawn at the origin. **Limit of 50 particles at a time.** </br>
+Mainly used to create a constant emission of particles over time (i.e. bleeding out). </br>
+Particles will despawn under three conditions:
+- The particle's lifespan has ended
+- The particle's grow limit was reached while using PE_EFFECT_GROW and PE_GROW_MODE_DEQUEUE
+- A new particle is added when 50 particles are already spawned. The oldest particle will be removed.
+## Function
+```c
+void PE_Add(ParticleEmitter* pe);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- acceleration (float) - the acceleration of the particle
+### Return
+This function does not return anything.
+## Example
+```c
+void update() {
+  CP_Graphics_ClearBackground(CP_Color_Create(0,0,0,255)); //black background
+  PE_Add(&pe); //add a particle every frame.
+  PE_Run(&pe); //run the emitter's update function.
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_AddMany
+Adds many particles at the same time. The particles will spawn at the origin. </br>
+If the directional range is 0, the particles will overlap and be unnoticable. **Limit of 50 particles at a time.** </br>
+Mainly used to create a temporary burst of particles (i.e. landing on the ground creates dust). </br>
+**__Caution__**: Do not use `PE_Add` and `PE_AddMany` on the same Particle Emitter. Inconsistent sideeffects may occur.
+## Function
+```c
+void PE_AddMany(ParticleEmitter* pe, int amount);
+```
+### Parameters
+- pe (ParticleEmitter*) - a pointer to the particle emitter
+- amount (int) - the number of particles to add at one time
+### Return
+This function does not return anything.
+## Example
+```c
+void update() {
+  CP_Graphics_ClearBackground(CP_Color_Create(0,0,0,255)); //black background
+  PE_Run(&pe); //run the emitter's update function.
+
+  if (character_landed_on_ground()) {
+    //create dust particles
+    particleSettingDust(); //some function you created to ensure the PE accurately mimics dust particles
+    PE_AddMany(&pe, 5); //create 5 particles at once.
+  }
+}
+```
+[Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
+# PE_Run
+The update loop of the particle emitter. You must have this in your `update()` loop, and only once.
+## Function
+```c
+void PE_Run(ParticleEmitter* pe); -->
 ```
 ### Parameters
 - pe (ParticleEmitter*) - a pointer to the particle emitter
@@ -549,23 +737,12 @@ This function does not return anything.
 ## Example
 ```c
 void update() {
-  PE_SetColorRandom(&pe); //random a new particle color before adding a new particle
-  PE_Add(&pe);
+  CP_Graphics_ClearBackground(CP_Color_Create(0,0,0,255)); //black background
+  PE_Add(&pe); //add a particle every frame.
+  PE_Run(&pe); //run the emitter's update function.
 }
 ```
 [Back to Top](https://github.com/Ansem717/CProcessingParticleLibrary#usage)
-<!--# PE_SetSize
-Sets the size of the particle.
-## Function
-```c
-void PE_SetSpeed(ParticleEmitter* pe, float speed);
-void PE_SetAcceleration(ParticleEmitter* pe, float acceleration);
-void PE_SetWeight(ParticleEmitter* pe, float weight);
-void PE_SetLifespan(ParticleEmitter* pe, int lifespan);
-
-void PE_Add(ParticleEmitter* pe);
-void PE_AddMany(ParticleEmitter* pe, int amount);
-void PE_Run(ParticleEmitter* pe); -->
 
 
 
