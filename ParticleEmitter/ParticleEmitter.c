@@ -49,11 +49,15 @@ void PE_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
 
 void PE_SetColorRandom(ParticleEmitter* pe) {
+	PE_SetColorRandomAdvanced(pe, 100, 50);
+}
+
+void PE_SetColorRandomAdvanced(ParticleEmitter* pe, int sat, int light) {
 	pe->col = CP_Color_FromColorHSL(
 		CP_ColorHSL_Create(
 			CP_Random_RangeInt(0, 360),
-			100,
-			60,
+			sat,
+			light,
 			255
 		)
 	);

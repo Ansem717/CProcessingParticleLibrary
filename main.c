@@ -40,7 +40,7 @@ void game_update(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 	PE_Run(&pe);
 
-	PE_SetColorRandom(&pe);
+	PE_SetColorRandomAdvanced(&pe, 50, 10);
 
 	PE_Add(&pe);
 
@@ -55,7 +55,7 @@ void game_update(void) {
 
 	if (CP_Input_KeyReleased(KEY_S)) {
 		if (pe.effects[PE_EFFECT_SHRINK] == 0) {
-			PE_AddEffect(&pe, PE_EFFECT_SHRINK, 1);
+			PE_AddEffect(&pe, PE_EFFECT_SHRINK, 0.01f);
 		} else {
 			PE_RemoveEffect(&pe, PE_EFFECT_SHRINK);
 		}
@@ -63,7 +63,7 @@ void game_update(void) {
 
 	if (CP_Input_KeyReleased(KEY_G)) {
 		if (pe.effects[PE_EFFECT_GROW] == 0) {
-			PE_AddEffect(&pe, PE_EFFECT_GROW, 1);
+			PE_AddEffect(&pe, PE_EFFECT_GROW, 0.01f);
 		} else {
 			PE_RemoveEffect(&pe, PE_EFFECT_GROW);
 		}
