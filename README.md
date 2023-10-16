@@ -728,7 +728,7 @@ void update() {
 The update loop of the particle emitter. You must have this in your `update()` loop, and only once.
 ## Function
 ```c
-void PE_Run(ParticleEmitter* pe); -->
+void PE_Run(ParticleEmitter* pe);
 ```
 ### Parameters
 - pe (ParticleEmitter*) - a pointer to the particle emitter
