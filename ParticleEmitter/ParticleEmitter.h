@@ -100,9 +100,15 @@ void PE_SetDelayGrowShrinkFrames(ParticleEmitter* pe, int delayGrowShrinkFrames)
 
 void PE_SetSize(ParticleEmitter* pe, float size);
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape);
-void PE_SetColor(ParticleEmitter* pe, CP_Color color);
-void PE_SetColorRandom(ParticleEmitter* pe);
-void PE_SetColorRandomAdvanced(ParticleEmitter* pe, int sat, int light);
+void PE_SetColor_RGB(ParticleEmitter* pe, CP_Color color);
+void PE_SetColor_HSL(ParticleEmitter* pe, CP_ColorHSL color);
+void PE_SetColorRandom_HSL(ParticleEmitter* pe);
+void PE_SetColorRandom_HS(ParticleEmitter* pe, int light);
+void PE_SetColorRandom_HL(ParticleEmitter* pe, int sat);
+void PE_SetColorRandom_SL(ParticleEmitter* pe, int hue);
+void PE_SetColorRandom_H(ParticleEmitter* pe, int sat, int light);
+void PE_SetColorRandom_S(ParticleEmitter* pe, int hue, int light);
+void PE_SetColorRandom_L(ParticleEmitter* pe, int sat, int hue);
 void PE_SetSpeed(ParticleEmitter* pe, float speed);
 void PE_SetAcceleration(ParticleEmitter* pe, float acceleration);
 void PE_SetWeight(ParticleEmitter* pe, float weight);

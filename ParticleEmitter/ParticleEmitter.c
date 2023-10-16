@@ -47,23 +47,24 @@ void PE_SetDelayGrowShrinkFrames(ParticleEmitter* pe, int delayGrowShrinkFrames)
 
 void PE_SetSize(ParticleEmitter* pe, float size) { pe->size = size; }
 void PE_SetShape(ParticleEmitter* pe, PE_SHAPE shape) { pe->shape = shape; }
+void PE_SetColor_RGB(ParticleEmitter* pe, CP_Color color) { pe->col = color; }
+void PE_SetColor_HSL(ParticleEmitter* pe, CP_ColorHSL color) { pe->col = CP_Color_FromColorHSL(color); }
 
-void PE_SetColorRandom(ParticleEmitter* pe) {
-	PE_SetColorRandomAdvanced(pe, 100, 50);
-}
+void PE_SetColorRandom_HSL(ParticleEmitter* pe) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(CP_Random_RangeInt(0, 360), CP_Random_RangeInt(0, 100), CP_Random_RangeInt(0, 100), 255));}
+void PE_SetColorRandom_HS(ParticleEmitter* pe, int light) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(CP_Random_RangeInt(0, 360), CP_Random_RangeInt(0, 100), light, 255));}
+void PE_SetColorRandom_HL(ParticleEmitter* pe, int sat) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(CP_Random_RangeInt(0, 360), sat, CP_Random_RangeInt(0, 100), 255));}
+void PE_SetColorRandom_SL(ParticleEmitter* pe, int hue) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(hue, CP_Random_RangeInt(0, 100), CP_Random_RangeInt(0, 100), 255));}
+void PE_SetColorRandom_H(ParticleEmitter* pe, int sat, int light) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(CP_Random_RangeInt(0, 360), sat, light, 255));}
+void PE_SetColorRandom_S(ParticleEmitter* pe, int hue, int light) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(hue, CP_Random_RangeInt(0, 100), light, 255));}
+void PE_SetColorRandom_L(ParticleEmitter* pe, int hue, int sat) {
+	PE_SetColor_HSL(pe, CP_ColorHSL_Create(hue, sat, CP_Random_RangeInt(0, 100), 255));}
 
-void PE_SetColorRandomAdvanced(ParticleEmitter* pe, int sat, int light) {
-	pe->col = CP_Color_FromColorHSL(
-		CP_ColorHSL_Create(
-			CP_Random_RangeInt(0, 360),
-			sat,
-			light,
-			255
-		)
-	);
-}
-
-void PE_SetColor(ParticleEmitter* pe, CP_Color color) { pe->col = color; }
 void PE_SetSpeed(ParticleEmitter* pe, float speed) { pe->speed = speed; }
 void PE_SetAcceleration(ParticleEmitter* pe, float acceleration) { pe->acceleration = acceleration; }
 void PE_SetWeight(ParticleEmitter* pe, float weight) { pe->weight = weight; }
